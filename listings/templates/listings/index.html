@@ -1,0 +1,271 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Prévisions météo</title>
+    <style>
+ body {
+    background-color: #42a9f8;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #f57f17;
+    margin-bottom: 20px;
+}
+
+.forecast-day {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e1f5fe;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-details {
+    display: flex;
+    align-items: center;
+}
+
+.forecast-details img {
+    margin-right: 10px;
+}
+
+p {
+    margin: 0;
+    color: #333333;
+}
+
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input[type="text"] {
+    margin-left: 10px;
+}
+
+form input[type="submit"] {
+    margin-left: 5px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prévisions météo pour {{ ville }}</h1>
+        
+        {% if forecast_data %}
+            {% for day, forecast in forecast_data.items %}
+                <div class="forecast-day">
+                    <h2>{{ day }}</h2>
+                    <div class="forecast-details">
+                        <img src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="{{ forecast.description }}">
+                        <p>{{ forecast.description }}</p>
+                        <p>Température : {{ forecast.temp }}°C</p>
+                        <p>Température minimale : {{ forecast.temp_min }}°C</p>
+                        <p>Température maximale : {{ forecast.temp_max }}°C</p>
+                        <p>Humidité : {{ forecast.humidity }}%</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucune prévision météo disponible.</p>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            <label for="ville">Ville :</label>
+            <input type="text" name="ville" id="ville" value="{{ ville }}">
+            <input type="submit" value="Chercher">
+        </form>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prévisions météo</title>
+    <style>
+        /* Styles généraux */
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://img.freepik.com/photos-premium/ciel-bleu-nuages-soleil-eclatant-photo-haute-qualite_153912-4364.jpg?w=1060');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            animation: fade-in 1s;
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .element {
+    animation-name: fade-in;
+    animation-duration: 2s; 
+}
+
+        h1 {
+            margin-top: 0;
+            color: #4287f5;
+            animation: slide-up 0.5s;
+        }
+
+        @keyframes slide-up {
+            0% {
+                transform: translateY(20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        form {
+            margin-bottom: 20px;
+            animation: slide-up 0.5s;
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #f5b542;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #d48a2c;
+        }
+
+        /* Prévisions météo */
+        .forecast-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: slide-up 0.5s;
+        }
+
+        .forecast-table th,
+        .forecast-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .forecast-table th {
+            background-color: #f5b542;
+            color: #fff;
+        }
+
+        .forecast-table td img {
+            margin-right: 10px;
+            animation: rotate 1s infinite linear;
+        }
+
+        .activities-sun {
+            color: #f5b542;
+            font-weight: bold;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .activities-no-sun {
+            color: #666;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prévisions météo pour {{ ville }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="ville">Ville :</label>
+            <input type="text" name="ville" id="ville" value="{{ ville }}">
+            <input type="submit" value="Chercher">
+        </form>
+        
+        {% if forecast_data %}
+            <table class="forecast-table">
+                <tr>
+                    <th>Jour</th>
+                    <th>Icon</th>
+                    <th>Description</th>
+                    <th>Température</th>
+                    <th>Température minimale</th>
+                    <th>Température maximale</th>
+                    <th>Humidité</th>
+                    <th>Activités</th>
+                </tr>
+                {% for day, forecast in forecast_data.items %}
+                    <tr>
+                        <td>{{ forecast.day }}</td>
+                        <td><img src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="{{ forecast.description }}"></td>
+                        <td>{{ forecast.description }}</td>
+                        <td>{{ forecast.temp }}°C</td>
+                        <td>{{ forecast.temp_min }}°C</td>
+                        <td>{{ forecast.temp_max }}°C</td>
+                        <td>{{ forecast.humidity }}%</td>
+                        <td>
+                            {% for activity in forecast.activities %}
+                                {% if forecast.icon == "01d" %}
+                                    <span class="activities-sun">{{ activity }}</span>
+                                {% else %}
+                                    <span class="activities-no-sun">{{ activity }}</span>
+                                {% endif %}
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            {% if not forecast.activities %}
+                                Aucune activité recommandée
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Aucune prévision disponible.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
